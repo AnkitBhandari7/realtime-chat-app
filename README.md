@@ -122,4 +122,4 @@ VITE_API_URL=http://localhost:5001
 
 Author
 
-Developed by [Your Name]
+Developed by Ankit Bhandari
