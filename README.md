@@ -1,125 +1,286 @@
-Real-Time Chat App
+# 💬 Realtime Chat Application
 
-A full-stack real-time chat application built with Node.js, Express, MongoDB, Socket.IO, React, TypeScript, and Tailwind CSS.
+A modern, full-stack realtime chat application built with **React**, **Node.js**, **Socket.IO**, and **MySQL**.  
+It allows users to communicate instantly in public or private chats with persistent message history stored in MySQL.
 
-Features
-Backend (Node.js + Express + MongoDB + Socket.IO)
+---
 
-🔑 CRUD Operations for users with Authentication (JWT) & Authorization.
+## 🚀 Overview
 
-📡 Real-time communication with Socket.IO (messages, user join/leave events).
+This project demonstrates a scalable and stylish chat system that includes:
 
-💾 Chat history stored in MongoDB.
+- **JWT authentication**
+- **MySQL persistence** with Sequelize ORM
+- **Modern dark interface** built using TailwindCSS
 
-📊 Shows total chat counts and total active users.
+Users can register, log in, view online members, chat publicly, and send private messages.
 
-Frontend (React + TypeScript + Tailwind CSS)
+---
 
-🎧 Listens to events (message, user:join, stats:update) and updates the UI live.
+## ⚙️ Features
 
-💬 Input box for sending messages.
+- ⚡ **Realtime Communication** – Socket.IO instantly updates all clients  
+- 💭 **Private Messaging** – Direct messages saved with `recipientId`  
+- 🌍 **Public Chatroom** – Everyone can chat in a shared room  
+- 🔒 **Authentication** – Secure login/register using JWT tokens  
+- 💾 **Persistence** – MySQL + Sequelize for relational data  
+- 🎨 **Modern Dark UI** – TailwindCSS styling with React + Vite  
+- 🧭 **Online Users Counter** – Track active users in realtime  
 
-📜 Scrollable list of messages.
+---
 
-Tech Stack
+## 🧱 Tech Stack
 
-Backend:
+| Layer | Technology |
+|-------|-------------|
+| **Frontend** | React (18), Vite, TailwindCSS, Heroicons |
+| **Backend** | Node.js, Express, Socket.IO |
+| **Database** | MySQL (v8), Sequelize ORM |
+| **Auth** | JWT, Bcrypt |
+| **Other Tools** | Axios, TypeScript, DBeaver / Workbench, Postman |
 
-Node.js
+---
 
-Express
+## 🖼️ Screenshot
 
-MongoDB (Mongoose)
+> Replace with your own screenshots or GIFs
 
-Socket.IO
+**Dark Chat Interface Example**
 
-JWT Authentication
+---
 
-TypeScript
+## 📂 Folder Structure
 
-Frontend:
+realtime-chat/
+├── client/ # React Frontend
+│ ├── src/
+│ │ ├── pages/ # Chat, Login, Register
+│ │ ├── components/ # UI components
+│ │ ├── api.ts # Axios instance
+│ │ └── index.css # Tailwind/Global styles
+│ └── package.json
+│
+└── server/ # Node + Express Backend
+├── src/
+│ ├── config/ # DB connection
+│ ├── controllers/ # Express controllers
+│ ├── middleware/ # JWT auth middleware
+│ ├── models/ # Sequelize models (User, Message)
+│ ├── routes/ # API routes
+│ ├── socket.ts # Socket.IO logic
+│ └── index.ts # Entry point
+└── package.json
 
-React
+yaml
+Copy code
 
-TypeScript
+---
 
-Tailwind CSS
+## ⚙️ Prerequisites
 
-Socket.IO Client
+- Node.js >= 18  
+- npm or yarn  
+- MySQL >= 8  
+- (Optional) DBeaver / MySQL Workbench  
 
-Installation & Setup
-1️⃣ Clone Repository
-git clone https://github.com/your-username/realtime-chat-app.git
-cd realtime-chat-app
+---
 
-2️⃣ Backend Setup
-cd backend
-npm install
+## 🧩 Environment Variables
 
+Create a file **`.env`** inside `/server`:
 
-Create .env file based on .env.example:
-
+```env
 PORT=5001
-MONGO_URI=mongodb://localhost:27017/chatapp
-JWT_SECRET=your_jwt_secret
-CLIENT_URL=http://localhost:3000
+JWT_SECRET=your_secret_key
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=your_mysql_password
+MYSQL_DATABASE=realtime_chat
+CORS_ORIGIN=http://localhost:5173
+Create a file .env inside /client if needed:
 
+env
+Copy code
+VITE_API_URL=http://localhost:5001/api
+VITE_SOCKET_URL=http://localhost:5001
+🛠️ Installation
+1️⃣ Clone the repository
+bash
+Copy code
+git clone https://github.com/yourusername/realtime-chat.git
+cd realtime-chat
+2️⃣ Install dependencies
+Server:
 
-Run backend:
-
-npm run dev
-
-3️⃣ Frontend Setup
-cd frontend
+bash
+Copy code
+cd server
 npm install
+Client:
 
-
-Create .env file based on .env.example:
-
-VITE_API_URL=http://localhost:5001
-
-
-Run frontend:
-
+bash
+Copy code
+cd ../client
+npm install
+▶️ Running the Application
+Run the backend
+bash
+Copy code
+cd server
 npm run dev
+Expected console output:
 
-Usage
+arduino
+Copy code
+MySQL connected successfully
+✅ Models synchronized with DB
+🚀 Server listening on port 5001
+Run the frontend
+In another terminal:
 
-Open two browser tabs and log in with different accounts.
+bash
+Copy code
+cd client
+npm run dev
+Then visit http://localhost:5173
 
-Send messages — they will appear in real-time on both clients.
+🧮 Database Setup
+Open MySQL or DBeaver
 
-User join/leave events and chat statistics are displayed live.
+Create a database:
 
-Folder Structure
-realtime-chat-app/
-│── backend/
-│   ├── src/
-│   ├── models/
-│   ├── routes/
-│   ├── controllers/
-│   ├── socket/
-│   ├── .env.example
-│── frontend/
-│   ├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── .env.example
+sql
+Copy code
+CREATE DATABASE realtime_chat
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+Sequelize will sync tables (users, messages) automatically.
 
-.env.example
+🔐 Authentication Flow
+Register – Create an account (username, email, password hashed with bcrypt)
 
-Backend (backend/.env.example)
+Login – Returns a JWT token
 
-PORT=5001
-MONGO_URI=mongodb://localhost:27017/chatapp
-JWT_SECRET=your_jwt_secret
-CLIENT_URL=http://localhost:3000
+Authorization – Token stored in localStorage and sent with each request/socket auth
 
+Protected Routes – /api/users, /api/chat, /api/auth/me require a valid JWT
 
-Frontend (frontend/.env.example)
+🗨️ Messaging Flow
+Client emits one of:
 
-VITE_API_URL=http://localhost:5001
+chat:message → public message
 
-Author
+chat:private → private message with recipientId
 
-Developed by Ankit Bhandari
+Server saves in MySQL:
+
+Public → recipientId = NULL
+
+Private → recipientId = target user's id
+
+Server broadcasts:
+
+chat:message → all clients
+
+chat:private → sender + recipient only
+
+Client queries:
+
+/api/chat/messages
+
+/api/chat/private/:userId
+
+🎨 UI Highlights
+Responsive two-column layout
+
+Dark sleek theme with TailwindCSS
+
+Sidebar: live user list
+
+Header: profile + logout
+
+Message bubbles:
+
+💙 You
+
+🩶 Others
+
+🧪 Example API Routes
+Method	Endpoint	Description
+POST	/api/auth/register	Register new user
+POST	/api/auth/login	Authenticate user
+GET	/api/users	List users (authenticated)
+GET	/api/chat/stats	Get message/user counts
+GET	/api/chat/messages	Public messages
+GET	/api/chat/private/:userId	Private DM history
+
+📊 SQL Schema (simplified)
+sql
+Copy code
+CREATE TABLE users (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('user','admin') DEFAULT 'user',
+  createdAt DATETIME,
+  updatedAt DATETIME
+);
+
+CREATE TABLE messages (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  content TEXT NOT NULL,
+  senderId INT UNSIGNED NOT NULL,
+  recipientId INT UNSIGNED NULL,
+  createdAt DATETIME,
+  updatedAt DATETIME,
+  FOREIGN KEY (senderId) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (recipientId) REFERENCES users(id) ON DELETE CASCADE
+);
+🧘 Troubleshooting
+Issue	Cause / Fix
+Too many keys specified	Drop duplicate indexes or stop using { alter:true }
+Private messages not loading	Ensure recipientId exists and socket emits chat:private
+Unauthorized (401)	Invalid / expired JWT → re-login
+Blank sidebar	Check /api/users and database contents
+
+🧩 Commands Summary
+Command	Function
+npm run dev	Start app in dev mode (server or client)
+npm run build	Build for production
+npm start	Run compiled server build
+
+👨‍💻 Contributing
+Fork this repository
+
+Create your feature branch:
+
+bash
+Copy code
+git checkout -b feature/amazing
+Commit your changes:
+
+bash
+Copy code
+git commit -m "Add something amazing"
+Push to the branch:
+
+bash
+Copy code
+git push origin feature/amazing
+Create a Pull Request
+
+📜 License
+MIT License © 2025 Your Name
+Feel free to use and modify for personal / educational projects.
+
+💖 Acknowledgements
+Socket.IO for realtime communication
+
+TailwindCSS for rapid modern UI styling
+
+Sequelize for ORM convenience
+
+React + Vite for lightning-fast development
+
+Everyone contributing to open-source ❤️

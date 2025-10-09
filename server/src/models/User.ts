@@ -1,22 +1,65 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { DataTypes, Model, Optional } from "sequelize";
+import { sequelize } from "../config/db";
 
-export interface IUser extends Document {
+export interface IUserAttributes {
+  id: number;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   role: "user" | "admin";
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const UserSchema = new Schema<IUser>(
+export interface IUserCreationAttributes extends Optional<IUserAttributes, "id" | "role" | "createdAt" | "updatedAt"> { }
+
+class User extends Model<IUserAttributes, IUserCreationAttributes> implements IUserAttributes {
+  public id!: number;
+  public username!: string;
+  public email!: string;
+  public password?: string;
+  public role!: "user" | "admin";
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+User.init(
   {
-    username: { type: String, required: true, unique: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true },
-    role: { type: String, enum: ["user", "admin"], default: "user" }
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    username: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      unique: true,
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
+      validate: { isEmail: true },
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM("user", "admin"),
+      allowNull: false,
+      defaultValue: "user",
+    },
   },
-  { timestamps: true, versionKey: false, toJSON: { virtuals: true, transform: (_doc, ret) => { delete ret.password; return ret; } } }
+  {
+    sequelize,
+    modelName: "User",
+    tableName: "users",
+    timestamps: true,
+    defaultScope: {
+      attributes: { exclude: ["password"] },
+    },
+  }
 );
 
-export default mongoose.model<IUser>("User", UserSchema);
+export default User;

@@ -1,32 +1,48 @@
 import http from "http";
 import dotenv from "dotenv";
 import app from "./app.js";
-import { connectDB } from "./config/db.js";
+import { connectDB, sequelize } from "./config/db.js";
+import User from "./models/User.js";
+import Message from "./models/Message.js";
+
 import { initSocket } from "./socket.js";
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
 dotenv.config();
 
 const port = Number(process.env.PORT) || 5001;
 
+
+ //Create HTTP + Socket Server
+ 
 const server = http.createServer(app);
 initSocket(server);
 
+
+ //Database connection + sync
+
 connectDB()
-  .then(() => {
+  .then(async () => {
+    //  Synchronize models with DB schema
+    // Use { alter:true } one time after adding new columns (recipientId)
+    await sequelize.sync();
+
+    console.log("Models synchronized with DB");
+
     server.listen(port, () => {
-      console.log(`Server listening on port ${port}`);
+      console.log(` Server listening on port ${port}`);
     });
   })
   .catch((err) => {
-    console.error("DB connection failed:", err);
+    console.error(" DB connection failed:", err);
     process.exit(1);
   });
 
-// Routes
-import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import chatRoutes from "./routes/chatRoutes.js";
 
+// Routes
+ 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
