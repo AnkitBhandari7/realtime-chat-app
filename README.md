@@ -271,7 +271,7 @@ git push origin feature/amazing
 Create a Pull Request
 
 📜 License
-MIT License © 2025 Your Name
+MIT License © 2025 Ankit Bhandar
 Feel free to use and modify for personal / educational projects.
 
 💖 Acknowledgements
