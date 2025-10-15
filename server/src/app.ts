@@ -13,7 +13,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // for local dev (Vite)
-      "https://realtime-chat-app-sage-sigma.vercel.app/login"
+      "https://realtime-chat-il7zko648-ankit-bhandaris-projects-5cd522fa.vercel.app/login"
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
