@@ -31,12 +31,17 @@ async function broadcastStats(io: Server) {
 export function initSocket(server: HTTPServer) {
   const io = new Server(server, {
     cors: {
-      origin: process.env.CORS_ORIGIN || "*",
+      origin: [
+        "http://localhost:5173", // Local Vite dev
+        "https://realtime-chat-il7zko648-ankit-bhandaris-projects-5cd522fa.vercel.app" // Vercel frontend
+      ],
+      methods: ["GET", "POST"],
       credentials: true,
     },
+    transports: ["websocket"], // enforce websocket transport
   });
 
-  // JWT authentication 
+  // JWT authentication
   io.use(async (socket, next) => {
     try {
       const token =
@@ -55,12 +60,12 @@ export function initSocket(server: HTTPServer) {
     }
   });
 
-  // main connection 
+  // Main connection
   io.on("connection", async (socket) => {
     const user = (socket as any).user as User;
     userSockets.set(user.id, socket.id);
 
-    // send message history (public only)
+    // Send public message history
     const history = await Message.findAll({
       where: { recipientId: null },
       include: [{ model: User, as: "sender", attributes: ["id", "username"] }],
@@ -68,7 +73,7 @@ export function initSocket(server: HTTPServer) {
     });
     socket.emit("chat:history", history);
 
-    // mark online
+    // Mark online
     const onlineUsers = bumpOnline(user.id, +1);
     io.emit("user:join", {
       userId: user.id,
@@ -77,14 +82,14 @@ export function initSocket(server: HTTPServer) {
     });
     await broadcastStats(io);
 
-    // PUBLIC MESSAGES 
+    // PUBLIC MESSAGES
     socket.on("chat:message", async (payload: { content: string }) => {
       if (!payload?.content?.trim()) return;
 
       const created = await Message.create({
         content: payload.content.trim(),
         senderId: user.id,
-        recipientId: null, // explicit public value
+        recipientId: null,
       });
 
       io.emit("chat:message", {
@@ -97,21 +102,19 @@ export function initSocket(server: HTTPServer) {
       await broadcastStats(io);
     });
 
-    // PRIVATE MESSAGES 
+    // PRIVATE MESSAGES
     socket.on(
       "chat:private",
       async (payload: { recipientId: number; content: string }) => {
         const { recipientId, content } = payload;
         if (!recipientId || !content?.trim()) return;
 
-        //  Save in DB including recipientId
         const created = await Message.create({
           content: content.trim(),
           senderId: user.id,
           recipientId,
         });
 
-        // build packet
         const msgPacket = {
           id: created.id,
           content: created.content,
@@ -120,14 +123,13 @@ export function initSocket(server: HTTPServer) {
           recipientId,
         };
 
-        //  Send to recipient (if online) and echo to sender
         const targetSocketId = userSockets.get(recipientId);
         if (targetSocketId) io.to(targetSocketId).emit("chat:private", msgPacket);
         socket.emit("chat:private", msgPacket);
       }
     );
 
-    // DISCONNECT 
+    // DISCONNECT
     socket.on("disconnect", async () => {
       userSockets.delete(user.id);
       const onlineUsersNow = bumpOnline(user.id, -1);
@@ -139,4 +141,6 @@ export function initSocket(server: HTTPServer) {
       await broadcastStats(io);
     });
   });
+
+  return io;
 }
