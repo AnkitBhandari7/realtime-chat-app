@@ -1,10 +1,16 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/auth.js";
-import { getMessages, getStats, getPrivateMessages } from "../controllers/chatController.js";
+import { authenticate } from "../middleware/auth";
+import { getMessages, getStats, getPrivateMessages, sendMessage } from "../controllers/chatController";
 
 const router = Router();
 
-router.get("/messages", authenticate, getMessages);
-router.get("/stats", authenticate, getStats);
+// Public endpoints
+router.get("/messages", getMessages);
+router.get("/stats", getStats);
+
+// Private endpoints (requires auth)
 router.get("/private/:userId", authenticate, getPrivateMessages);
+router.post("/send", authenticate, sendMessage);
+
+
 export default router;
