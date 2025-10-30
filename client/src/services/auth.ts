@@ -1,5 +1,5 @@
 
-import api from '@/lib/api'; // or '../lib/api' if you don't use the @ alias
+import api from '@/lib/api'; 
 
 export async function register(name: string, email: string, password: string) {
     const res = await api.post('/auth/register', { name, email, password });

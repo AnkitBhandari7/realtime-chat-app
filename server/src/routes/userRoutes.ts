@@ -12,10 +12,9 @@ import User from "../models/User.js";
 
 const router = Router();
 
-// -----------------------------------------------------------
-// 🚀 Public “user list” for chat sidebar
-//    Returns only id & username for all users (no password/email)
-// -----------------------------------------------------------
+
+//  Public “user list” for chat sidebar Returns only id & username for all users (no password/email)
+
 router.get("/", authenticate, async (_req, res) => {
     try {
         const users = await User.findAll({
@@ -29,15 +28,14 @@ router.get("/", authenticate, async (_req, res) => {
     }
 });
 
-// -----------------------------------------------------------
-// Current user (“me”) endpoints
-// -----------------------------------------------------------
+
+// Current user endpoints
+
 router.get("/me", authenticate, me);
 router.put("/me", authenticate, updateMe);
 
-// -----------------------------------------------------------
-// Admin‑only management endpoints
-// -----------------------------------------------------------
+// Admin only management endpoints
+
 router.get("/admin/all", authenticate, requireAdmin, listUsers);
 router.get("/:id", authenticate, getUser);
 router.put("/:id", authenticate, updateUser);

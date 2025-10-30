@@ -29,7 +29,7 @@ if (!host || !user || !database) {
 export const sequelize = new Sequelize(database, user, password, {
   host,
   port,
-  dialect: "mysql",  // We're using MySQL database
+  dialect: "mysql",  //  using MySQL database
   logging: false,    // Set to true if you want to see SQL queries in console
 });
 

@@ -74,8 +74,7 @@ export default function Register() {
         localStorage.setItem("username", displayName);
       }
 
-      // Optional: log response for debugging (remove in prod)
-      // console.log("Register response:", data);
+      
 
       navigate("/chat");
     } catch (err: any) {

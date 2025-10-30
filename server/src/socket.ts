@@ -60,7 +60,6 @@ export function initSocket(server: HTTPServer) {
   io.on("connection", async (socket) => {
     const user = (socket as any).user as User;
 
-    //  REMOVED: console.log for connection
 
     userSockets.set(user.id, socket.id);
 
@@ -157,7 +156,7 @@ export function initSocket(server: HTTPServer) {
     });
 
     socket.on("disconnect", async () => {
-      // REMOVED: console.log for disconnection
+      
 
       userSockets.delete(user.id);
       const onlineUsersNow = bumpOnline(user.id, -1);
