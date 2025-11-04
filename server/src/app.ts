@@ -1,13 +1,15 @@
-
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import session from "express-session";
+import { RedisStore } from "connect-redis";
+import redisClient from "./config/redisClient";
 
 // Import routes 
-import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import chatRoutes from "./routes/chatRoutes.js";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import chatRoutes from "./routes/chatRoutes";
 
 dotenv.config();
 
@@ -56,10 +58,23 @@ app.use(
   })
 );
 
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "chatapp:",
+});
+
+app.use(
+  session({
+    store: redisStore,
+    secret: process.env.SESSION_SECRET || "supersecretkey",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
 // SIMPLIFIED: Only log in development mode and only errors/important events
 if (process.env.NODE_ENV === "development") {
   app.use((req, _res, next) => {
-    // Only log POST requests (important actions)
     if (req.method === "POST") {
       console.log(`${req.method} ${req.originalUrl}`);
     }
@@ -85,9 +100,9 @@ app.use((req, res) => {
   res.status(404).json({ message: `Route not found: ${req.originalUrl}` });
 });
 
-// Global error handler (last)
+// Global error handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(" Error:", err.message);
+  console.error("Error:", err.message);
 
   if (err.message?.includes("CORS")) {
     return res.status(403).json({

@@ -2,8 +2,10 @@
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize";
 
+
 // Load environment variables from .env file
 dotenv.config();
+
 
 // Read database configuration from environment variables
 const host = process.env.DB_HOST as string;       // Database server address (e.g., localhost)
@@ -53,3 +55,5 @@ export async function syncDB() {
     console.error("Failed to sync DB:", err);
   }
 }
+
+

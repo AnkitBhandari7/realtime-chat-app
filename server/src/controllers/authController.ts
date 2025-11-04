@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";  // For password hashing
 import jwt from "jsonwebtoken"; // For creating login tokens
 import { Op } from "sequelize"; // For database OR conditions
-import User from "../models/User.js";
+import User from "../models/User";
 
 // Helper function: Create a login token (JWT) for a user
 function signToken(id: number, role: string) {

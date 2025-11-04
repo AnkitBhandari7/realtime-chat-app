@@ -1,8 +1,9 @@
 import http from "http";
 import dotenv from "dotenv";
 import app from "./app.js";
-import { connectDB, sequelize } from "./config/db.js";
-import { initSocket } from "./socket.js";
+import { connectDB, sequelize } from "./config/db";
+import { connectRedis } from "./config/redisClient";
+import { initSocket } from "./socket";
 
 dotenv.config();
 const port = Number(process.env.PORT) || 5001;
@@ -11,6 +12,7 @@ const port = Number(process.env.PORT) || 5001;
   try {
     console.log(" Connecting to database...");
     await connectDB();
+    await connectRedis();
     console.log("Database connected");
 
     //  FIXED: Use force: false, alter: false in development

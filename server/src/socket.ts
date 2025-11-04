@@ -1,8 +1,10 @@
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import type { Server as HTTPServer } from "http";
-import Message from "./models/Message.js";
-import User from "./models/User.js";
+import Message from "./models/Message";
+import User from "./models/User";
+import { saveMessageToCache,getRecentMessages } from "./services/cacheService";
+import { pub, sub} from "./config/redis";
 
 const onlineMap = new Map<number, number>();
 const userSockets = new Map<number, string>();
@@ -39,6 +41,16 @@ export function initSocket(server: HTTPServer) {
       credentials: true,
     },
     allowEIO3: true,
+  });
+
+  // subscribe to redis channel and forward events to socket.io
+  sub.subscribe("chat-channel", (message: string) => {
+    try {
+      const { event, data } = JSON.parse(message);
+      io.emit(event, data);
+    } catch (err) {
+      // ignore malformed messages
+    }
   });
 
   io.use(async (socket, next) => {
@@ -105,6 +117,7 @@ export function initSocket(server: HTTPServer) {
         };
 
         io.emit("chat:message", msgPacket);
+        await pub.publish("chat-channel", JSON.stringify({ event: "chat:message", data:msgPacket}));
         await broadcastStats(io);
       } catch (error) {
         //  Only log errors in development
@@ -147,6 +160,9 @@ export function initSocket(server: HTTPServer) {
         }
 
         socket.emit("chat:private", msgPacket);
+        //publish private message to other instances as well
+
+        await pub.publish("chat-channel", JSON.stringify({event:"chat-ptivate", data:msgPacket}));
       } catch (error) {
         //Only log errors in development
         if (process.env.NODE_ENV === "development") {

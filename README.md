@@ -2,15 +2,17 @@
 
 <div align="center">
 
-![Chat App Banner](https://img.shields.io/badge/Realtime-Chat-blue?style=for-the-badge&logo=socket.io)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Realtime Chat](https://img.shields.io/badge/Realtime-Chat-blue?style=for-the-badge&logo=socket.io)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 
-A modern, full-stack real-time chat application with public and private messaging capabilities.
+🚀 A **full-stack real-time chat application** built with React, Node.js, TypeScript, and Socket.IO.  
+Now enhanced with **Redis caching** for blazing-fast session management and scalability.
 
-[Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [Screenshots](#-screenshots) • [API Documentation](#-api-documentation)
+[Features](#-features) • [Tech Stack](#-tech-stack) • [Setup](#-getting-started) • [Structure](#-project-structure) • [License](#-license)
 
 </div>
 
@@ -18,100 +20,84 @@ A modern, full-stack real-time chat application with public and private messagin
 
 ## ✨ Features
 
-### 🎯 Core Functionality
-- **Real-time Messaging** - Instant message delivery using Socket.IO
-- **Public Chat Rooms** - Chat with everyone in the public channel
-- **Private Messaging** - One-on-one conversations with any user
-- **User Authentication** - Secure JWT-based login system
-- **Online Status** - See who's currently online
-- **Message History** - Persistent chat history stored in database
+### 💬 Core Functionality
+- **Realtime Messaging** — Instant chat powered by Socket.IO  
+- **Public & Private Chats** — Global rooms and one-on-one conversations  
+- **Persistent Storage** — Messages stored in MySQL using Sequelize ORM  
+- **User Authentication** — JWT-secured login & registration  
+- **Online/Offline Presence** — Track connected users in real-time  
+- **Redis Session Store** — Fast, scalable session management  
+- **Message History** — Retrieve previous messages instantly  
 
-### 🎨 User Experience
-- **Modern Dark UI** - Sleek, Discord-inspired interface
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Auto-scroll** - Messages automatically scroll to the latest
-- **User Search** - Quickly find and chat with users
-- **Real-time Stats** - Live count of users, messages, and online status
-- **Message Timestamps** - See when each message was sent
+### 🧠 User Experience
+- **Modern Dark Mode UI** — Inspired by Discord  
+- **Responsive Design** — Works on desktop and mobile  
+- **Live Typing Indicator** *(optional enhancement)*  
+- **Auto-scroll** — Always see the latest messages  
+- **User Search** — Quickly find users to chat with  
+- **Timestamped Messages** — Every message shows when it was sent  
 
 ### 🔒 Security
-- **Password Hashing** - bcrypt encryption for secure password storage
-- **JWT Tokens** - Stateless authentication
-- **Protected Routes** - Middleware-based route protection
-- **Input Validation** - Server-side validation for all inputs
-- **CORS Protection** - Configured CORS for secure cross-origin requests
+- **Password Hashing** — bcrypt for secure credential storage  
+- **JWT Authentication** — Stateless auth for APIs  
+- **Protected Routes** — Middleware-based access control  
+- **Input Validation** — Server-side sanitization  
+- **Helmet + CORS** — Hardened Express security configuration  
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- **React 18** - Modern UI library with hooks
-- **TypeScript** - Type-safe development
-- **Vite** - Lightning-fast build tool
-- **Socket.IO Client** - Real-time communication
-- **Axios** - HTTP client for API requests
-- **Tailwind CSS** - Utility-first CSS framework
-- **Heroicons** - Beautiful UI icons
+### 🖥️ Frontend
+- **React 18 + TypeScript** — Component-based, strongly-typed UI  
+- **Vite** — Lightning-fast dev environment  
+- **Socket.IO Client** — Real-time event handling  
+- **Axios** — REST API communication  
+- **Tailwind CSS** — Modern utility-first styling  
+- **Heroicons** — Clean and consistent UI icons  
 
-### Backend
-- **Node.js** - JavaScript runtime
-- **Express** - Fast web framework
-- **TypeScript** - Type-safe backend code
-- **Socket.IO** - Real-time WebSocket server
-- **Sequelize ORM** - Database management
-- **MySQL** - Relational database
-- **JWT** - JSON Web Tokens for auth
-- **bcryptjs** - Password hashing
-- **Helmet** - Security middleware
-- **CORS** - Cross-origin resource sharing
+### ⚙️ Backend
+- **Node.js + Express + TypeScript** — Scalable and type-safe backend  
+- **Socket.IO** — WebSocket-based real-time communication  
+- **Sequelize ORM + MySQL** — Reliable relational data management  
+- **Redis + connect-redis** — High-performance session and cache store  
+- **JWT + bcryptjs** — Secure authentication system  
+- **Helmet + CORS** — Security best practices  
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### ✅ Prerequisites
+- **Node.js** (v18+)
+- **MySQL** (v8+)
+- **Redis** (v6+)
 
-Make sure you have the following installed:
-- **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
-- **MySQL** (v8 or higher) - [Download](https://dev.mysql.com/downloads/)
-- **npm** or **yarn** - Comes with Node.js
+### 📦 Installation
 
-### Installation
-
-#### 1️⃣ Clone the Repository
-
+#### 1️⃣ Clone Repository
 ```bash
 git clone https://github.com/yourusername/realtime-chat-app.git
 cd realtime-chat-app
 
 
-###2️⃣ Set Up the Database
-# Login to MySQL
-mysql -u root -p
+2️⃣ Set Up MySQL Database
 
-# Create database
 CREATE DATABASE realtime_chat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-# Exit MySQL
-EXIT;
+3️⃣ Start Redis Server
 
+Make sure Redis is running locally:
 
-###3️⃣ Backend Setup
-# Navigate to server folder
+redis-server
+
+4️⃣ Backend Setup
+
 cd server
-
-# Install dependencies
 npm install
-
-# Create .env file
 cp .env.example .env
 
-# Edit .env with your credentials
-nano .env
-
-
-Backend .env Configuration:
+Edit .env:
 # Server
 PORT=5001
 NODE_ENV=development
@@ -120,109 +106,103 @@ NODE_ENV=development
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_password_here
+DB_PASSWORD=yourpassword
 DB_NAME=realtime_chat
 
-# JWT
-JWT_SECRET=your-super-secret-jwt-key-min-32-characters-long
+# JWT Secret
+JWT_SECRET=your-super-secret-key
+
+# Redis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
 
 # CORS
 CORS_ORIGIN=http://localhost:5173
 
+Run backend:
 
-###4️⃣ Frontend Setup
-# Navigate to client folder
+npm run dev
+
+5️⃣ Frontend Setup
+
 cd ../client
-
-# Install dependencies
 npm install
-
-# Create .env file
 cp .env.example .env
 
-# Edit .env
-nano .env
+Edit .env:
 
-Frontend .env Configuration:
-# Development
 VITE_API_URL=http://localhost:5001/api
 VITE_SOCKET_URL=http://localhost:5001
 
-# Production (uncomment when deploying)
-# VITE_API_URL=https://your-api-domain.com/api
-# VITE_SOCKET_URL=https://your-api-domain.com
+Run frontend:
 
-###5️⃣ Run the Application
-Terminal 1 - Backend:
-cd server
 npm run dev
 
-Terminal 2 - Frontend:
+🖥️ Access the app:
+Frontend → http://localhost:5173
 
-cd client
-npm run dev
+Backend → http://localhost:5001
 
-The app will be running at:
+Health Check → http://localhost:5001/health
 
-Frontend: http://localhost:5173
-Backend: http://localhost:5001
-Health Check: http://localhost:5001/health
+🧱 Project Structure
+
+realtime-chat-app/
+├── client/                     # React + TypeScript frontend
+│   ├── src/
+│   │   ├── components/         # UI components
+│   │   ├── pages/              # Page views (Login, Chat, etc.)
+│   │   ├── api.ts              # API service setup
+│   │   └── main.tsx            # App entry point
+│   └── package.json
+│
+├── server/                     # Node.js + TypeScript backend
+│   ├── src/
+│   │   ├── config/             # DB + Redis configuration
+│   │   ├── controllers/        # Route handlers
+│   │   ├── middleware/         # Auth and error middleware
+│   │   ├── models/             # Sequelize models
+│   │   ├── routes/             # Express routes
+│   │   ├── socket.ts           # Socket.IO setup
+│   │   ├── app.ts              # Express + Redis + sessions
+│   │   └── index.ts            # Server entry point
+│   ├── package.json
+│   └── .env
+│
+└── README.md
 
 
 📸 Screenshots
-Login Screen
-<img src="screenshots/login.png" width="600" alt="Login Screen">
-Public Chat
-<img src="screenshots/public_chat.png" width="600" alt="Public Chat">
-Private Messaging
-<img src="screenshots/private-chat.png" width="600" alt="Private Chat">
 
-📁 Project Structure
-
-realtime-chat-app/
-├── client/                 # Frontend (React + TypeScript)
-│   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Page components (Chat, Login, Register)
-│   │   ├── api.ts         # API configuration
-│   │   └── main.tsx       # App entry point
-│   ├── .env               # Frontend environment variables
-│   └── package.json
-│
-├── server/                # Backend (Node.js + TypeScript)
-│   ├── src/
-│   │   ├── config/        # Database configuration
-│   │   ├── controllers/   # Route handlers
-│   │   ├── middleware/    # Auth and other middleware
-│   │   ├── models/        # Database models (User, Message)
-│   │   ├── routes/        # API routes
-│   │   ├── app.ts         # Express app setup
-│   │   ├── index.ts       # Server entry point
-│   │   └── socket.ts      # Socket.IO configuration
-│   ├── .env               # Backend environment variables
-│   └── package.json
-│
-└── README.md              
+|                      Login                     |                      Public Chat                     |                      Private Chat                     |
+| :--------------------------------------------: | :--------------------------------------------------: | :---------------------------------------------------: |
+| <img src="screenshots/login.png" width="300"/> | <img src="screenshots/public_chat.png" width="300"/> | <img src="screenshots/private-chat.png" width="300"/> |
 
 
 📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
 
+This project is licensed under the MIT License — see the LICENSE file for details.
 
 👨‍💻 Author
-Your Name
 
-GitHub: @yourusername
-LinkedIn: Your Name
-Email: your.email@example.com
+Ankit Bhandari
+📧 your.email@example.com
 
+🌐 GitHub: @ankitbhandari
+
+💼 LinkedIn: Ankit Bhandari
 
 🙏 Acknowledgments
-Socket.IO for real-time communication
-Sequelize for elegant ORM
-Tailwind CSS for beautiful styling
-Heroicons for UI icons
-The open-source community
 
+. Socket.IO — Real-time communication magic
 
+. Sequelize — ORM simplicity
 
+. Redis — Blazing-fast caching and session store
+
+. Tailwind CSS — Effortless styling
+
+. Open Source Community — For endless inspiration ❤️
+
+⚡ “Fast. Secure. Realtime. Built with passion.”
+— Ankit Bhandari

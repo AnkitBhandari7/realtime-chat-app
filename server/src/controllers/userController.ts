@@ -1,6 +1,6 @@
 import { Response } from 'express'
-import type { AuthRequest } from '../middleware/auth.js'
-import User from '../models/User.js'
+import type { AuthRequest } from '../middleware/auth'
+import User from '../models/User'
 
 // helper: strip sensitive fields
 function toSafe(u: any) {
