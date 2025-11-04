@@ -12,5 +12,5 @@
   },
   "include": [
     "src"
-  ]
+, "sequelize.config.js"  ]
 }
